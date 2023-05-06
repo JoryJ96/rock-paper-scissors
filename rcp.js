@@ -1,5 +1,5 @@
-alert(playGame());
-
+let userScore = 0;
+let computerScore = 0;
 
 function getComputerChoice() {
     let determiner = Math.floor(Math.random() * 100);
@@ -12,68 +12,91 @@ function getComputerChoice() {
     }
 }
 
-function getUserChoice() {
-    userChoice = prompt("Rock, Paper, or Scissors?").toLowerCase();
-    console.log(userChoice);
-    if (!(userChoice == "rock" || userChoice == "paper" || userChoice == "scissors")) {
-        alert("Invalid input!");
-        getUserChoice();
-    }
+// function getUserChoice() {
+//     userChoice = prompt("Rock, Paper, or Scissors?").toLowerCase();
 
-    return userChoice;
-}
+//     console.log(userChoice);
 
-function playRound(userChoice, computerChoice) {
+//     if (!(userChoice == "rock" || userChoice == "paper" || userChoice == "scissors")) {
+//         alert("Invalid input!");
+//         getUserChoice();
+//     }
+
+//     return userChoice;
+// }
+
+function playRound(userChoice) {
+    const computerChoice = getComputerChoice();
     switch (userChoice) {
         case "rock":
             if (computerChoice === "rock") {
-                return "Tie!";
+                return;
             } else if (computerChoice === "paper") {
-                return "You lose!";
+                computerScore++;
+                break;
             } else {
-                return "You win!";
+                userScore++;
+                break;
             }
         case "paper":
             if (computerChoice === "rock") {
-                return "You win!";
+                userScore++;
+                break;
             } else if (computerChoice === "paper") {
-                return "Tie!";
+                return;
             } else {
-                return "You lose!";
+                computerScore++;
+                break;
             }
         case "scissors":
             if (computerChoice === "rock") {
-                return "You lose!";
+                computerScore++;
+                break;
             } else if (computerChoice === "paper") {
-                return "You win!";
+                userScore++;
+                break;
             } else {
-                return "Tie!";
+                return;
             }
     }
-}
 
-function playGame() {
-    let userScore = 0;
-    let computerScore = 0;
+    console.log(userChoice + ", " + computerChoice)
+    const currentScore = document.querySelector('.score');
+    currentScore.textContent = `User ${userScore} - ${computerScore} Computer`;
 
-    for (let i = 0; i < 5; i++) {
-        let computerChoice = getComputerChoice();
-        let userChoice = getUserChoice();
+    if (computerScore == 5) {
+        // Hide the scoreboard and just show the result
+        currentScore.textContent = "";
 
-        let result = playRound(userChoice, computerChoice);
-
-        if (result === "You win!") {
-            userScore++;
-        } else if (result === "You lose!") {
-            computerScore++;
-        } else if (result === "Tie!") {
-            continue;
-        }
-    }
-
-    if (userScore > computerScore) {
-        return "You won the game!";
-    } else {
-        return "You lost...";
+        const result = document.querySelector(".result");
+        result.textContent = `The computer has won with a score of ${computerScore} to ${userScore}!`;
+    } else if (userScore == 5) {
+        currentScore.textContent = "";
+        
+        const result = document.querySelector(".result");
+        result.textContent = `You have won with a score of ${userScore} to ${computerScore}!`;
     }
 }
+
+// function playGame() {
+//     let userScore = 0;
+//     let computerScore = 0;
+
+//     for (let i = 0; i < 5; i++) {
+//         let result = playRound(userChoice);
+
+//         if (result === "You win!") {
+//             userScore++;
+//         } else if (result === "You lose!") {
+//             computerScore++;
+//         } else if (result === "Tie!") {
+//             continue;
+//         }
+//     }
+
+//     if (userScore > computerScore) {
+//         return "You won the game!";
+//     } else {
+//         return "You lost...";
+//     }
+// }
